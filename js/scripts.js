@@ -1,44 +1,25 @@
 var userNumber;
 var romanNumeral = "";
 
-var symbols = ["M", "D", "C", "L", "X", "V", "I"];
-var symbolValues = [1000, 500, 100, 50, 10, 5, 1];
+var symbols = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
+var symbolValues = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+
+var converter = function(input) {
+  if (input > 3999) {
+    romanNumeral = "Please enter a number less than 4,000";
+  } else {
+    for (var i = 0; i < symbolValues.length; i++){
+      if (input >= symbolValues[i]) {
+        numeralDuplicator(Math.floor(input/symbolValues[i]), symbolValues[i]);
+        input = input-(Math.floor(input/symbolValues[i])*symbolValues[i]);
+      }
+    }
+  }
+}
 
 var numeralDuplicator = function(multiplier, index){
   for (var i = 0; i < multiplier; i++){
     romanNumeral += symbols[symbolValues.indexOf(index)];
-  }
-}
-
-var numeralSubtractor = function(index){
-  var tempNumeral = symbols[symbolValues.indexOf(index)];
-  romanNumeral = tempNumeral + romanNumeral;
-}
-
-var converter = function(input) {
-  debugger;
-  if (input > 3999) {
-    return "Please enter a number less than 4,000";
-  } else {
-    for (var i = 0; i < symbolValues.length; i++){
-      if (input === symbolValues[i]) {            // input: 10, output: X
-        romanNumeral += symbols[i];
-        break;
-      } else if (input % symbolValues[i] === 0){      // input: 20, output: XX
-        numeralDuplicator((input/symbolValues[i]), symbolValues[i]);
-        break;
-      } else if (input > symbolValues[i]) {       // input: 21, output: XXI
-        numeralDuplicator(Math.floor(input/symbolValues[i]), symbolValues[i]);
-        input = input-(Math.floor(input/symbolValues[i])*symbolValues[i]);
-      // } else if (symbolValues[i] === input+1 || symbolValues[i] === input - 4) {     // detects 4's and 9's (e.g., 5 === 4+1)
-      //   romanNumeral = romanNumeral + symbols[i+1] + symbols[i];
-      //   break;
-        // numeralDuplicator(1, symbolValues[i]);
-        // input = input - symbolValues[i];
-      } else if (input < 0){
-        numeralSubtractor(symbolValues[i]);
-      }
-    }
   }
 }
 
